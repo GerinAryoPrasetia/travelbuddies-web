@@ -7,6 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [admin, setAdmin] = useState(false);
 
   const handleSubmit = (e) => {
     console.log("first");
@@ -25,7 +26,12 @@ const Login = () => {
         .then((data) => {
           console.log(data);
           if (data.code === 200) {
-            setSuccess(true);
+            localStorage.setItem("token", data.token);
+            if (data.role === "admin") {
+              setAdmin(true);
+            } else {
+              setSuccess(true);
+            }
           }
         });
     } catch (error) {
@@ -34,7 +40,9 @@ const Login = () => {
     e.preventDefault();
   };
 
-  if (success) {
+  if (admin) {
+    return <Navigate to="/admin" />;
+  } else if (success) {
     return <Navigate to="/" />;
   } else {
     return (
@@ -42,6 +50,7 @@ const Login = () => {
         <div className="w-full md:w-1/3 bg-white rounded-lg">
           <div className="flex font-bold justify-center mt-6">
             <img
+              alt=""
               className="h-20 w-20"
               src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg"
             />
