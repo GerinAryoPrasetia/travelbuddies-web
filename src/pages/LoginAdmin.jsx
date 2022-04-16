@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, Navigate, Redirect } from "react-router-dom";
 
-const Login = () => {
+const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
@@ -12,7 +12,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     console.log("first");
     try {
-      fetch("http://localhost:8000/api/login", {
+      fetch("http://localhost:8000/api/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const Login = () => {
           console.log(data);
           if (data.code === 200) {
             localStorage.setItem("@token", data.token);
-            if (data.role === "admin") {
+            if (data.data.role === "admin") {
               setAdmin(true);
             } else {
               setSuccess(true);
@@ -55,7 +55,9 @@ const Login = () => {
               src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg"
             />
           </div>
-          <h2 className="text-3xl text-center text-gray-700 mb-4">Login</h2>
+          <h2 className="text-3xl text-center text-gray-700 mb-4">
+            Login Admin
+          </h2>
           <div className="px-12 pb-10">
             <div className="w-full mb-2">
               <div className="flex items-center">
@@ -88,7 +90,6 @@ const Login = () => {
             >
               Login
             </button>
-            <Link to={"/register"}>Daftar Akun Baru</Link>
           </div>
         </div>
       </div>
@@ -96,4 +97,4 @@ const Login = () => {
   }
 };
 
-export default Login;
+export default LoginAdmin;
