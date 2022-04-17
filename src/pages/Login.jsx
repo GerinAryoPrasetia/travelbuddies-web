@@ -27,7 +27,8 @@ const Login = () => {
           console.log(data);
           if (data.code === 200) {
             localStorage.setItem("@token", data.token);
-            if (data.role === "admin") {
+            localStorage.setItem("@user_id", data.data.id);
+            if (data.data.role === "admin") {
               setAdmin(true);
             } else {
               setSuccess(true);
