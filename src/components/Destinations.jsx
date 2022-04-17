@@ -23,16 +23,16 @@ const Destinations = () => {
     <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
       {destination &&
         destination.map((d) => {
-          // <Link
-          //   to={{
-          //     pathname: `/destination/${d.id}`,
-          //     state: { destination: d },
-          //   }}
-          // >
-          return <Destination {...d} key={d.id} />;
-          {
-            /* </Link>; */
-          }
+          return (
+            <Link
+              to={{
+                pathname: `/destination/${d.id}`,
+                state: { destination: d },
+              }}
+            >
+              <Destination {...d} key={d.id} />;
+            </Link>
+          );
         })}
     </div>
   );
