@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const styles = {
   container: {
@@ -31,6 +30,36 @@ const AddPlan = () => {
   const [trasnportation, setTransportation] = useState("");
   const [items, setItems] = useState("");
 
+  const handleSubmit = async () => {
+    const token = localStorage.getItem("@token");
+    const userId = localStorage.getItem("@user_id");
+
+    try {
+      await fetch("http://localhost:8000/api/plan", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          destination_name: destination,
+          schedule: schedule,
+          people: people,
+          items: items,
+          transportation: trasnportation,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onChangeName = (e) => {
     setDestination(e.target.value);
   };
@@ -47,40 +76,11 @@ const AddPlan = () => {
     setItems(e.target.value);
   };
 
-  const handleSubmit = async () => {
-    const token = localStorage.getItem("@token");
-    const userId = localStorage.getItem("@user_id");
-    console.log(token);
-
-    try {
-      await fetch("http://localhost:8000/api/destination", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          destination_name: destination,
-          schedule: schedule,
-          trasnportation: trasnportation,
-          items: items,
-          people: people,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div>
       <div className="container items-center px-5 py-12 lg:px-20">
-        <form className="flex flex-col w-full p-10 px-8 pt-6 mx-auto my-6 mb-4 transition duration-500 ease-in-out transform bg-white border rounded-lg lg:w-1/2">
+        <div className="flex flex-col w-full p-10 px-8 pt-6 mx-auto my-6 mb-4 transition duration-500 ease-in-out transform bg-white border rounded-lg lg:w-1/2">
+          <h2>Add Your Travel Plan</h2>
           <div className="relative pt-4">
             <label for="name" className="text-base leading-7 text-blueGray-500">
               Destination Name
@@ -106,7 +106,7 @@ const AddPlan = () => {
                 type="text"
                 id="name"
                 name="name"
-                placeholder="City"
+                placeholder="Schedule"
                 onChange={onChangeSchedule}
                 className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
               />
@@ -120,7 +120,7 @@ const AddPlan = () => {
               type="text"
               id="name"
               name="name"
-              placeholder="City"
+              placeholder="People"
               onChange={onChangePeople}
               className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
             />
@@ -133,7 +133,7 @@ const AddPlan = () => {
               type="text"
               id="name"
               name="name"
-              placeholder="Address"
+              placeholder="Items"
               onChange={onChangeItems}
               className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
             />
@@ -147,18 +147,18 @@ const AddPlan = () => {
               id="name"
               name="name"
               onChange={onChangeTransportation}
-              placeholder="List of Facilities"
+              placeholder="Transportation"
               className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
             />
           </div>
           <button
             type="button"
             onClick={handleSubmit}
-            className="text-white w-1/2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 items-center"
+            className="text-white w-1/2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 items-center mt-5"
           >
             Submit
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
